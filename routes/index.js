@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
-
 var db = require('../server/db');
+
+
+//////////////////////
+// Postgres queries
+//////////////////////
 
 router.get('/api/players', db.getAllPlayers);
 router.get('/api/players/:id', db.getSinglePlayer);

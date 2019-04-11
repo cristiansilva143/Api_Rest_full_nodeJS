@@ -1,15 +1,21 @@
-var promise = require('bluebird');
+var promise = require('bluebird'); //maneja lsa promesas de la 
+var app = express();
 
 var options = {
-  // Initialization Options
-  promiseLib: promise
+  promiseLib: promise // Initialization Options
 };
 
+//declaro el path de conecxion a la Base de postgresSql//
 var pgp = require('pg-promise')(options);
-var connectionString = 'postgres://postgres:123@localhost:5432/prueba';
+var connectionString = 'postgres://postgres:1234@localhost:5432/prueba';
 var db = pgp(connectionString);
 
-// add query functions
+
+
+//  query functions de la BD //
+//Metodo (GET): router.get('/api/players', db.getAllPlayers);//
+              //router.get('/api/players/:id', db.getSinglePlayer);//
+
 function getAllPlayers(req, res, next) {
   db.any('select * from player')
     .then(function (data) {
@@ -33,7 +39,7 @@ function getSinglePlayer(req, res, next) {
         .json({
           status: 'success',
           data: data,
-          message: 'Retrieved ONE Player'
+          message: 'recupera un Player'
         });
     })
     .catch(function (err) {
@@ -41,9 +47,11 @@ function getSinglePlayer(req, res, next) {
     });
 }
 
+//Metodo (POST): router.post('/api/players', db.createPlayer);//
+
 function createPlayer(req, res, next) {
   console.log(req.query);
-  db.none('insert into player(name, surname, dob) values (${name}, ${surname}, ${dob})', req.query)
+  db.none('insert into player(name, surname, dob)' + 'values (${name}, ${surname}, ${dob})', req.query)
     .then(function () {
       res.status(200)
         .json({
@@ -56,6 +64,8 @@ function createPlayer(req, res, next) {
     });
 }
 
+//Metodo (PUT): router.put('/api/players/:id', db.updatePlayer);//
+
 function updatePlayer(req, res, next) {
   console.log(req.query);
   db.none('update player set name=$1, surname=$2, dob=$3 where id=$4',
@@ -64,13 +74,15 @@ function updatePlayer(req, res, next) {
       res.status(200)
         .json({
           status: 'success',
-          message: 'Updated player'
+          message: 'Actualizado el player'
         });
     })
     .catch(function (err) {
       return next(err);
     });
 }
+
+//Metodo (DELETE): router.delete('/api/players/:id', db.deletePlayer);//
 
 function deletePlayer(req, res, next) {
   var playerId = parseInt(req.params.id);
@@ -89,6 +101,10 @@ function deletePlayer(req, res, next) {
     });
 }
 
+/////////////
+// Exports
+/////////////
+
 module.exports = {
   getAllPlayers: getAllPlayers,
   getSinglePlayer: getSinglePlayer,
@@ -96,3 +112,5 @@ module.exports = {
   updatePlayer: updatePlayer,
   deletePlayer: deletePlayer
 };
+
+module.exports = app;

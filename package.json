@@ -5,12 +5,16 @@
   "main": "index.js",
   "dependencies": {
     "bluebird": "^3.5.4",
-    "express": "^4.14.0",
+    "bootstrap": "^4.3.1",
+    "express": "^4.16.4",
     "pg-promise": "^5.9.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  },
   "scripts": {
     "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
