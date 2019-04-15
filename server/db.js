@@ -17,7 +17,7 @@ var db = pgp(connectionString);
               //router.get('/api/players/:id', db.getSinglePlayer);//
 
 function getAllPlayers(req, res, next) {
-  db.any('select * from player')
+  db.any('select * from F_EQUIPOS')
     .then(function (data) {
       res.status(200)
         .json({
@@ -33,13 +33,13 @@ function getAllPlayers(req, res, next) {
 
 function getSinglePlayer(req, res, next) {
     var playerID = parseInt(req.params.id);
-    db.one('select * from player where id = $1', playerID)
+    db.one('select * from F_EQUIPOS where id = $1', playerID)
     .then(function (data) {
       res.status(200)
         .json({
           status: 'success',
           data: data,
-          message: 'recupera un Player'
+          message: 'recupera un equipo'
         });
     })
     .catch(function (err) {
@@ -51,12 +51,12 @@ function getSinglePlayer(req, res, next) {
 
 function createPlayer(req, res, next) {
   console.log(req.query);
-  db.none('insert into player(name, surname, dob)' + 'values (${name}, ${surname}, ${dob})', req.query)
+  db.none('insert into F_EQUIPOS(PAIS_ID, EQUIPO)' + 'values (${PAIS_ID}, ${EQUIPO})', req.query)
     .then(function () {
       res.status(200)
         .json({
           status: 'success',
-          message: 'Inserted one player'
+          message: 'Inserted EQUIPO'
         });
     })
     .catch(function (err) {
@@ -68,13 +68,13 @@ function createPlayer(req, res, next) {
 
 function updatePlayer(req, res, next) {
   console.log(req.query);
-  db.none('update player set name=$1, surname=$2, dob=$3 where id=$4',
+  db.none('update F_EQUIPO set PAIS_ID=$1, EQUIPO=$2 where id=$4',
     [req.query.name, req.query.surname, req.query.dob, parseInt(req.params.id)])
     .then(function () {
       res.status(200)
         .json({
           status: 'success',
-          message: 'Actualizado el player'
+          message: 'Actualizado EQUIPO'
         });
     })
     .catch(function (err) {
@@ -86,13 +86,13 @@ function updatePlayer(req, res, next) {
 
 function deletePlayer(req, res, next) {
   var playerId = parseInt(req.params.id);
-  db.result('delete from player where id = $1', playerId)
+  db.result('delete from F_EQUIPO where id = $1', playerId)
     .then(function (result) {
       /* jshint ignore:start */
       res.status(200)
         .json({
           status: 'success',
-          message: `Removed ${result.rowCount} player`
+          message: `Removed ${result.rowCount} EQUIPO`
         });
       /* jshint ignore:end */
     })

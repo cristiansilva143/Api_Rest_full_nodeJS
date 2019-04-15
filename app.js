@@ -5,6 +5,10 @@ var index = require('./routes/index');
 app.use('/', index);
 
 app.use(function (req, res, next) {
+  res.status(200).send(data)
+});
+
+app.use(function (req, res, next) {
   res.status(404).send('URL no encontrada')
 });
 
